@@ -1,0 +1,37 @@
+[gd_scene load_steps=7 format=3 uid="uid://bq1dlri0q10e5"]
+
+[ext_resource type="Script" path="res://menu/tutorial.gd" id="1_83ndh"]
+[ext_resource type="Texture2D" uid="uid://bcx2au36j5e" path="res://Art/tutorial.png" id="2_ucbgb"]
+[ext_resource type="Texture2D" uid="uid://b6n7p08hs8r62" path="res://Art/xButton.png" id="3_x00yr"]
+
+[sub_resource type="Gradient" id="Gradient_d86v2"]
+offsets = PackedFloat32Array(0, 0.0438247)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_h5aka"]
+gradient = SubResource("Gradient_d86v2")
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_yv3v3"]
+
+[node name="Tutorial" type="Node2D"]
+script = ExtResource("1_83ndh")
+
+[node name="background" type="Sprite2D" parent="."]
+modulate = Color(0.128906, 0.128906, 0.128906, 1)
+scale = Vector2(20, 4000)
+texture = SubResource("GradientTexture1D_h5aka")
+metadata/_edit_lock_ = true
+
+[node name="Tutorial" type="Sprite2D" parent="."]
+texture = ExtResource("2_ucbgb")
+
+[node name="ExitButton" type="TouchScreenButton" parent="."]
+position = Vector2(-823, -429)
+scale = Vector2(7, 7)
+shape = SubResource("CircleShape2D_yv3v3")
+
+[node name="ExitSprite" type="Sprite2D" parent="."]
+position = Vector2(-823, -427)
+scale = Vector2(5, 5)
+texture = ExtResource("3_x00yr")
+
+[connection signal="released" from="ExitButton" to="." method="_on_touch_screen_button_released"]

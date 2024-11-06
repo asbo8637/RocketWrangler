@@ -1,0 +1,33 @@
+[gd_scene load_steps=5 format=3 uid="uid://bivgd1yc4y76e"]
+
+[ext_resource type="Script" path="res://Player/Character.gd" id="1_anobq"]
+[ext_resource type="Texture2D" uid="uid://bt8kqmclllfq8" path="res://Art/Character.png" id="2_cqulh"]
+[ext_resource type="AudioStream" uid="uid://c2pcnokjs1622" path="res://sounds/drop03-82909.mp3" id="3_ucoqr"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1nljm"]
+radius = 74.18
+
+[node name="Character" type="CharacterBody2D" groups=["player"]]
+z_index = 2
+scale = Vector2(1.75, 1.75)
+collision_layer = 0
+script = ExtResource("1_anobq")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_cqulh")
+hframes = 3
+vframes = 3
+
+[node name="Area2D" type="Area2D" parent="." groups=["player"]]
+position = Vector2(-3.8147e-06, 0)
+scale = Vector2(0.202634, 0.20874)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_1nljm")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_ucoqr")
+volume_db = -5.0
+pitch_scale = 2.0
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]

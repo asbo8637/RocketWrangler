@@ -1,0 +1,214 @@
+[gd_scene load_steps=29 format=3 uid="uid://qla4f0fn5qg2"]
+
+[ext_resource type="Script" path="res://menu/Play.gd" id="1_8ul4e"]
+[ext_resource type="Texture2D" uid="uid://brxr2xn0rlwh4" path="res://Art/helicopter.png" id="2_we2fn"]
+[ext_resource type="Texture2D" uid="uid://d3xl8ahlnlku5" path="res://Art/Play Button.png" id="2_ya0vu"]
+[ext_resource type="Script" path="res://menu/Helicopter.gd" id="3_uiafs"]
+[ext_resource type="Texture2D" uid="uid://dwej2b1dn3306" path="res://Art/SleepingPlayer.png" id="4_nfepe"]
+[ext_resource type="AudioStream" uid="uid://dhx2vl5t8b807" path="res://sounds/menuMusic.mp3" id="5_k7sur"]
+[ext_resource type="Texture2D" uid="uid://dhew0b375t2ca" path="res://Art/title.png" id="6_6sico"]
+[ext_resource type="PackedScene" uid="uid://bq1dlri0q10e5" path="res://menu/tutorial.tscn" id="8_6obbh"]
+[ext_resource type="Script" path="res://menu/HowToPlay.gd" id="8_jr26l"]
+[ext_resource type="Script" path="res://menu/Title.gd" id="8_lexyb"]
+[ext_resource type="Texture2D" uid="uid://35yd5hr80u4l" path="res://Art/HowButton.png" id="10_i8ivg"]
+[ext_resource type="Script" path="res://menu/muteTouch.gd" id="12_0lc2f"]
+[ext_resource type="Texture2D" uid="uid://dc65ufnwchmik" path="res://Art/soundButton.png" id="12_spq2w"]
+[ext_resource type="Script" path="res://menu/CreditsButton.gd" id="14_mfgqf"]
+[ext_resource type="PackedScene" uid="uid://jeo4rv8b7guc" path="res://Credits/credits.tscn" id="15_melik"]
+[ext_resource type="Texture2D" uid="uid://d3ch7u5a421nl" path="res://Art/Credit Button.png" id="16_s5fi1"]
+
+[sub_resource type="Gradient" id="Gradient_jiuh4"]
+offsets = PackedFloat32Array(0.00429185, 0.00858369)
+colors = PackedColorArray(0.0705882, 0.384314, 0.603922, 1, 0.113725, 0.486275, 0.74902, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_e803n"]
+gradient = SubResource("Gradient_jiuh4")
+
+[sub_resource type="Animation" id="Animation_6wcu5"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_lkgjt"]
+resource_name = "spin"
+length = 0.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.1, 0.15),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_1umuf"]
+_data = {
+"RESET": SubResource("Animation_6wcu5"),
+"spin": SubResource("Animation_lkgjt")
+}
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ku5tg"]
+animation = &"spin"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_h55ls"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_4rdee"]
+states/Start/position = Vector2(436, 99.1111)
+states/spin/node = SubResource("AnimationNodeAnimation_ku5tg")
+states/spin/position = Vector2(558, 98.6667)
+transitions = ["Start", "spin", SubResource("AnimationNodeStateMachineTransition_h55ls")]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lyc6f"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qhaql"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_17vna"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lcfsp"]
+
+[node name="Menu" type="Node2D"]
+
+[node name="background" type="Sprite2D" parent="."]
+scale = Vector2(20, 4000)
+texture = SubResource("GradientTexture1D_e803n")
+metadata/_edit_lock_ = true
+
+[node name="Helicopter" type="Sprite2D" parent="."]
+position = Vector2(-102, -4)
+scale = Vector2(4, 4)
+texture = ExtResource("2_we2fn")
+vframes = 4
+script = ExtResource("3_uiafs")
+
+[node name="Player" type="Sprite2D" parent="Helicopter"]
+position = Vector2(26.75, 4.25)
+scale = Vector2(0.438, 0.438)
+texture = ExtResource("4_nfepe")
+vframes = 2
+
+[node name="jumpTimer" type="Timer" parent="Helicopter"]
+wait_time = 0.5
+one_shot = true
+
+[node name="JiggleTimer" type="Timer" parent="Helicopter"]
+wait_time = 0.1
+one_shot = true
+
+[node name="helicopterAnimation" type="AnimationPlayer" parent="."]
+root_node = NodePath("../Helicopter")
+libraries = {
+"": SubResource("AnimationLibrary_1umuf")
+}
+
+[node name="AnimationTreeHeli" type="AnimationTree" parent="."]
+tree_root = SubResource("AnimationNodeStateMachine_4rdee")
+anim_player = NodePath("../helicopterAnimation")
+active = true
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_k7sur")
+volume_db = -10.0
+autoplay = true
+
+[node name="Title" type="Sprite2D" parent="."]
+position = Vector2(-205, 109)
+scale = Vector2(6, 6)
+texture = ExtResource("6_6sico")
+script = ExtResource("8_lexyb")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+z_index = 6
+position = Vector2(1.52588e-05, 7.62939e-06)
+zoom = Vector2(0.5, 0.5)
+editor_draw_drag_margin = true
+
+[node name="ButtonsFolder" type="Node" parent="."]
+
+[node name="HowToPlay" type="TouchScreenButton" parent="ButtonsFolder"]
+z_index = 1
+position = Vector2(255, 0)
+scale = Vector2(10, 5)
+shape = SubResource("RectangleShape2D_lyc6f")
+script = ExtResource("8_jr26l")
+
+[node name="Tutorial" parent="ButtonsFolder/HowToPlay" instance=ExtResource("8_6obbh")]
+visible = false
+z_index = 2
+z_as_relative = false
+position = Vector2(-25.5, 0)
+scale = Vector2(0.03, 0.06)
+
+[node name="howSprite" type="Sprite2D" parent="ButtonsFolder/HowToPlay"]
+position = Vector2(-0.300003, 0)
+scale = Vector2(0.125, 0.25)
+texture = ExtResource("10_i8ivg")
+vframes = 2
+
+[node name="Play" type="TouchScreenButton" parent="ButtonsFolder"]
+position = Vector2(255, -120)
+scale = Vector2(10, 5)
+shape = SubResource("RectangleShape2D_qhaql")
+script = ExtResource("1_8ul4e")
+
+[node name="PlaySprite" type="Sprite2D" parent="ButtonsFolder/Play"]
+scale = Vector2(0.5, 1)
+texture = ExtResource("2_ya0vu")
+vframes = 2
+
+[node name="muteTouch" type="TouchScreenButton" parent="ButtonsFolder"]
+position = Vector2(-360, -150)
+scale = Vector2(3, 3)
+shape = SubResource("RectangleShape2D_17vna")
+script = ExtResource("12_0lc2f")
+
+[node name="muteSprite" type="Sprite2D" parent="ButtonsFolder/muteTouch"]
+scale = Vector2(0.66, 0.66)
+texture = ExtResource("12_spq2w")
+vframes = 2
+
+[node name="CreditsButton" type="TouchScreenButton" parent="ButtonsFolder"]
+position = Vector2(255, 120)
+scale = Vector2(10, 5)
+shape = SubResource("RectangleShape2D_lcfsp")
+script = ExtResource("14_mfgqf")
+
+[node name="Credits" parent="ButtonsFolder/CreditsButton" instance=ExtResource("15_melik")]
+visible = false
+z_index = 4
+position = Vector2(-25.5, -24)
+scale = Vector2(0.03, 0.06)
+
+[node name="creditsSprite" type="Sprite2D" parent="ButtonsFolder/CreditsButton"]
+scale = Vector2(0.1, 0.2)
+texture = ExtResource("16_s5fi1")
+vframes = 2
+
+[connection signal="timeout" from="Helicopter/jumpTimer" to="Helicopter" method="_on_jump_timer_timeout"]
+[connection signal="pressed" from="ButtonsFolder/HowToPlay" to="ButtonsFolder/HowToPlay" method="_on_pressed"]
+[connection signal="released" from="ButtonsFolder/HowToPlay" to="ButtonsFolder/HowToPlay" method="_on_released"]
+[connection signal="pressed" from="ButtonsFolder/Play" to="ButtonsFolder/Play" method="_on_pressed"]
+[connection signal="released" from="ButtonsFolder/Play" to="Helicopter" method="_on_play_released"]
+[connection signal="released" from="ButtonsFolder/Play" to="Title" method="_on_play_released"]
+[connection signal="released" from="ButtonsFolder/Play" to="ButtonsFolder/HowToPlay" method="_on_play_released"]
+[connection signal="released" from="ButtonsFolder/Play" to="ButtonsFolder/Play" method="_on_released"]
+[connection signal="released" from="ButtonsFolder/Play" to="ButtonsFolder/muteTouch" method="_on_play_released"]
+[connection signal="released" from="ButtonsFolder/Play" to="ButtonsFolder/CreditsButton" method="_on_play_released"]
+[connection signal="released" from="ButtonsFolder/muteTouch" to="ButtonsFolder/muteTouch" method="_on_released"]
+[connection signal="pressed" from="ButtonsFolder/CreditsButton" to="ButtonsFolder/CreditsButton" method="_on_pressed"]
+[connection signal="released" from="ButtonsFolder/CreditsButton" to="ButtonsFolder/CreditsButton" method="_on_released"]
