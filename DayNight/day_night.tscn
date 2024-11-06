@@ -1,0 +1,82 @@
+[gd_scene load_steps=13 format=3 uid="uid://cet2hhtkndsp2"]
+
+[ext_resource type="Script" path="res://DayNight/DayNight.gd" id="1_ux04i"]
+[ext_resource type="Texture2D" uid="uid://t7il7oo65weq" path="res://Art/stars.png" id="2_o3n56"]
+[ext_resource type="Texture2D" uid="uid://balnh81jiww02" path="res://Art/sun.png" id="2_vianc"]
+[ext_resource type="Texture2D" uid="uid://dq6q40r1x332u" path="res://Art/moon.png" id="3_ojvdi"]
+
+[sub_resource type="Gradient" id="Gradient_dflqx"]
+offsets = PackedFloat32Array(0.00429185, 0.00858369)
+colors = PackedColorArray(0.0705882, 0.384314, 0.603922, 1, 0.113725, 0.486275, 0.74902, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_126es"]
+gradient = SubResource("Gradient_dflqx")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_grqvp"]
+atlas = ExtResource("2_vianc")
+region = Rect2(0, 128, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dehpf"]
+atlas = ExtResource("2_vianc")
+region = Rect2(0, 64, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0wlsw"]
+atlas = ExtResource("2_vianc")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xneqw"]
+atlas = ExtResource("2_vianc")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5ah8w"]
+atlas = ExtResource("2_vianc")
+region = Rect2(64, 64, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_1j5qf"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_grqvp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dehpf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0wlsw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xneqw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5ah8w")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="DayNight" type="Node2D"]
+script = ExtResource("1_ux04i")
+
+[node name="background" type="Sprite2D" parent="."]
+position = Vector2(2.38419e-07, 2.38419e-07)
+scale = Vector2(20, 4000)
+texture = SubResource("GradientTexture1D_126es")
+
+[node name="stars" type="Sprite2D" parent="."]
+modulate = Color(0.109804, 0.490196, 0.74902, 1)
+position = Vector2(0, 100)
+texture = ExtResource("2_o3n56")
+
+[node name="AnimatedSun" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, 1)
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_1j5qf")
+autoplay = "default"
+frame_progress = 0.581152
+offset = Vector2(0, -150)
+
+[node name="Moon" type="Sprite2D" parent="."]
+scale = Vector2(2, 2)
+texture = ExtResource("3_ojvdi")
+offset = Vector2(0, 150)

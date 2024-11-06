@@ -1,0 +1,38 @@
+[gd_scene load_steps=7 format=3 uid="uid://jeo4rv8b7guc"]
+
+[ext_resource type="Script" path="res://Credits/Credits.gd" id="1_cnn35"]
+[ext_resource type="Texture2D" uid="uid://ctf70n6xql28x" path="res://Art/CreditsRocketWrangler.jpg" id="2_gfkfe"]
+[ext_resource type="Texture2D" uid="uid://b6n7p08hs8r62" path="res://Art/xButton.png" id="3_r6knv"]
+
+[sub_resource type="Gradient" id="Gradient_wtry1"]
+offsets = PackedFloat32Array(0, 0.0438247)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_mxjsr"]
+gradient = SubResource("Gradient_wtry1")
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_tmo4b"]
+
+[node name="Credits" type="Node2D"]
+script = ExtResource("1_cnn35")
+
+[node name="background" type="Sprite2D" parent="."]
+modulate = Color(0.128906, 0.128906, 0.128906, 1)
+scale = Vector2(20, 4000)
+texture = SubResource("GradientTexture1D_mxjsr")
+metadata/_edit_lock_ = true
+
+[node name="Credits" type="Sprite2D" parent="."]
+position = Vector2(-2, 54)
+texture = ExtResource("2_gfkfe")
+
+[node name="ExitSprite" type="Sprite2D" parent="."]
+position = Vector2(-823, -427)
+scale = Vector2(5, 5)
+texture = ExtResource("3_r6knv")
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="."]
+position = Vector2(-824, -424)
+scale = Vector2(7, 7)
+shape = SubResource("CircleShape2D_tmo4b")
+
+[connection signal="released" from="TouchScreenButton" to="." method="_on_touch_screen_button_released"]
